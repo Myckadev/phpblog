@@ -1,21 +1,17 @@
 <?php
 
 require_once 'vendor/autoload.php';
-require 'Router.php';
 
 use App\Controller\TestController;
-use Twig\Loader\FilesystemLoader as TwigFileLoader;
-use Twig\Environment as TwigEnvironment;
+use App\Router;
+use Dotenv\Dotenv;
 
-// Configuration de Twig
-$twigLoader = new TwigFileLoader(__DIR__ . '/src/Template');
-$twig = new TwigEnvironment($twigLoader, [
-    'cache' => __DIR__ . '/cache',
-    'debug' => true, //retirer pour la prod
-]);
+//Initialisation du fichier d'environnement
+$dotEnv = Dotenv::createImmutable(__DIR__, ['.env', '.env.local']);
+$dotEnv->load();
 
 // Configuration des routes
-$router = new Router(twig: $twig);
+$router = new Router();
 
 // Supposons que vos contrôleurs sont dans le namespace App\Controller
 $router->add('home', TestController::class, 'home', 'GET');

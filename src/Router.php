@@ -1,17 +1,10 @@
 <?php
 
-use Twig\Environment as TwigEnvironment;
+namespace App;
 
-class Router 
+class Router
 {
-    private TwigEnvironment $twig;
     private $routes = [];
-
-    public function __construct(TwigEnvironment $twig)
-    {
-        $this->twig = $twig;
-    }
-
 
     public function add($uri, $controller, $method, $httpMethod = 'GET'): static
     {
@@ -30,12 +23,12 @@ class Router
         foreach ($this->routes as $route) {
             if (preg_match("@^" . $route['uriPattern'] . "$@", $uri, $matches) && $requestMethod == $route['httpMethod']) {
                 array_shift($matches); // Retirer le chemin complet
-    
+
                 // Préfixez le nom du contrôleur avec le namespace
                 $controllerName = $route['controller'];
-                if(class_exists($controllerName)) {
-                    $controller = new $controllerName($this->twig);
-                    if(method_exists($controller, $route['method'])) {
+                if (class_exists($controllerName)) {
+                    $controller = new $controllerName();
+                    if (method_exists($controller, $route['method'])) {
                         call_user_func_array([$controller, $route['method']], $matches);
                     } else {
                         // Gestion d'erreur si la méthode n'existe pas
@@ -50,7 +43,7 @@ class Router
                 return;
             }
         }
-    
+
         header("HTTP/1.1 404 Not Found");
         echo "404 Not Found";
     }

@@ -2,18 +2,39 @@
 
 namespace App\Controller;
 
-use Twig\Environment as TwigEnvironment;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use Twig\Loader\FilesystemLoader;
 
 abstract class AbstractController
 {
+    protected Environment $twig;
 
-    public function __construct(
-        protected readonly TwigEnvironment $twig,
-    ) {
+    public function __construct()
+    {
+        $this->twig = $this->initializeTwig();
     }
 
-    protected function render($template, array $args = [])
+    abstract protected function initializeRepository();
+
+    private function initializeTwig(): Environment
     {
-        echo $this->twig->render($template, $args);
+        $twigLoader = new FilesystemLoader(__DIR__ . '/../Template');
+        return new Environment($twigLoader, [
+            'cache' => __DIR__ . '/../../cache',
+            'debug' => true, //retirer pour la prod
+        ]);
+    }
+
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    protected function render($template, array $args = [], $statusCode = 200): Response
+    {
+        return new Response($this->twig->render($template, $args), $statusCode);
     }
 }
