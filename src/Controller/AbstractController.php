@@ -37,4 +37,9 @@ abstract class AbstractController
     {
         return new Response($this->twig->render($template, $args), $statusCode);
     }
+
+    protected function redirect(string $uri): RedirectResponse
+    {
+        return new RedirectResponse($uri);
+    }
 }
