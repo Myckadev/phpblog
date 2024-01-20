@@ -8,6 +8,16 @@ class SessionService
     public function ensureStarted(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
+
+            //Configuration les paramètres de sécurité des cookies de session
+            session_set_cookie_params([
+               'lifetime' => 3600,
+                'path' => '/',
+                'secure' => true,
+                'httponly' => true,
+                'samesite' => 'Strict',
+            ]);
+
             session_start();
         }
     }

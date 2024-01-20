@@ -46,7 +46,7 @@ abstract class AbstractController
         return new RedirectResponse($uri);
     }
 
-    protected function handleForm($formData, callable $onSuccess)
+    protected function handleForm(array $formData, callable $onSuccess)
     {
         if (!$this->sessionService->isCsrfTokenValid($formData['csrf_token'])) {
             throw new \Exception('Invalid CSRF TOKEN');
