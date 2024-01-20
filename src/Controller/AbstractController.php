@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\SessionService;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -11,10 +12,12 @@ use Twig\Loader\FilesystemLoader;
 abstract class AbstractController
 {
     protected Environment $twig;
+    protected SessionService $sessionService;
 
     public function __construct()
     {
         $this->twig = $this->initializeTwig();
+        $this->sessionService = new SessionService();
     }
 
     abstract protected function initializeRepository();
@@ -41,5 +44,14 @@ abstract class AbstractController
     protected function redirect(string $uri): RedirectResponse
     {
         return new RedirectResponse($uri);
+    }
+
+    protected function handleForm($formData, callable $onSuccess)
+    {
+        if (!$this->sessionService->isCsrfTokenValid($formData['csrf_token'])) {
+            throw new \Exception('Invalid CSRF TOKEN');
+        }
+
+        return $onSuccess();
     }
 }
