@@ -22,6 +22,7 @@ abstract class AbstractController
 
     abstract protected function initializeRepository();
 
+    //Twig nous permet de prendre en charge l'escape de caractère spéciaux ce qui évite les failles XSS (Cross-Site Scripting)
     private function initializeTwig(): Environment
     {
         $twigLoader = new FilesystemLoader(__DIR__ . '/../Template');
