@@ -60,4 +60,25 @@ class SessionService
             session_destroy();
         }
     }
+
+    public function generateCsrfToken(): string
+    {
+        $this->ensureStarted();
+        $token = bin2hex(random_bytes(32));
+        $_SESSION['csrf_token'] = $token;
+
+        return $token;
+    }
+
+    public function getCsrfToken()
+    {
+        $this->ensureStarted();
+
+        return $this->getSession('csrf_token');
+    }
+
+    public function isCsrfTokenValid(string $token): bool
+    {
+        return $token === $this->getCsrfToken();
+    }
 }
