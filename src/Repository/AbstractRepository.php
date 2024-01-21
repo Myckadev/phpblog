@@ -24,7 +24,7 @@ abstract class AbstractRepository {
         $this->table = $this->getTableName();
     }
 
-    abstract protected function getTableName();
+    abstract protected function getTableName(): string;
 
     //L'utilisation de requête préparer permet d'éviter le SQL injection.
     public function find($id): mixed
@@ -40,7 +40,7 @@ abstract class AbstractRepository {
 
     abstract protected function createEntity(array $data);
 
-    public function save($entity): bool|string
+    public function save(mixed $entity): bool|string
     {
         $table = $this->getTableName();
         $fields = $this->getEntityFields($entity);

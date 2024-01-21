@@ -62,6 +62,7 @@ function migrateDatabase(array $args): void
     match ($direction) {
         '--up' => applyMigration(),
         '--down' => revertMigration(),
+        default => exit(1),
     };
 
 }
@@ -82,7 +83,7 @@ function applyMigration(): void
             exit(1);
         }
 
-        echo "La migration $classBaseName c'est appliqué avec succès";
+        echo "La migration $classBaseName c'est appliqué avec succès\n";
     }
 }
 
@@ -102,7 +103,7 @@ function revertMigration(): void
             exit(1);
         }
 
-        echo "La migration $classBaseName c'est appliqué avec succès";
+        echo "La migration $classBaseName c'est supprimé avec succès\n";
     }
 }
 

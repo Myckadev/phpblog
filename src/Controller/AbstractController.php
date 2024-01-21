@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\RequestService;
 use App\Service\SessionService;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -13,11 +14,13 @@ abstract class AbstractController
 {
     protected Environment $twig;
     protected SessionService $sessionService;
+    protected RequestService $requestService;
 
     public function __construct()
     {
         $this->twig = $this->initializeTwig();
         $this->sessionService = new SessionService();
+        $this->requestService = new RequestService();
     }
 
     abstract protected function initializeRepository();
