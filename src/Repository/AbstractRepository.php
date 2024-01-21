@@ -26,6 +26,7 @@ abstract class AbstractRepository {
 
     abstract protected function getTableName();
 
+    //L'utilisation de requête préparer permet d'éviter le SQL injection.
     public function find($id): mixed
     {
         $statement = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id");

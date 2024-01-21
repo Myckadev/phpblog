@@ -2,12 +2,13 @@
     "name": "vendor/name",
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "Migrations\\": "migrations/"
         }
     },
     "require": {
+        "ext-pdo": "*",
         "twig/twig": "^3.0",
-        "vlucas/phpdotenv": "^5.6",
-      "ext-pdo": "*"
+        "vlucas/phpdotenv": "^5.6"
     }
 }

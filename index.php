@@ -13,8 +13,10 @@ $dotEnv->load();
 // Configuration des routes
 $router = new Router();
 
-// Supposons que vos contrôleurs sont dans le namespace App\Controller
-$router->add('home', TestController::class, 'home', 'GET');
-$router->add('list', TestController::class, 'list', 'GET'); 
+// Initiliaser les routes dans notre Router
+$router->add('home', TestController::class, 'home');
+$router->add('list', TestController::class, 'list');
+$router->add('post', TestController::class, 'postQqch', 'POST');
+
 
 $router->run();
