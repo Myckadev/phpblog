@@ -13,13 +13,22 @@ class UserRepository extends AbstractRepository {
 
     protected function createEntity(array $data): User
     {
-        return new User($data['id'], $data['username'], $data['password']);
+        return new User(...$data);
     }
 
-    protected function getEntityFields($user): array {
+    protected function getEntityFields($entity): array
+    {
+        /**@var User $entity*/
+
         return [
-            'username' => $user->getUsername(),
-            'password' => $user->getPassword() 
+            'firstName' => $entity->getFirstName(),
+            'lastName' => $entity->getLastName(),
+            'description' => $entity->getDescription(),
+            'resume' => $entity->getResume(),
+            'profilPicture' => $entity->getProfilPicture(),
+            'password' => $entity->getPassword(),
+            'links' => $entity->getLinks(),
+            'roles' => $entity->getRoles(),
         ];
     }
 
