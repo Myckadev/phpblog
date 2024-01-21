@@ -1,0 +1,115 @@
+#!/usr/bin/env php
+<?php
+
+use Dotenv\Dotenv;
+
+require __DIR__. '/../vendor/autoload.php';
+
+if ($argc < 2) {
+    echo "Usage: php bin/console [command]\n";
+    exit(1);
+}
+
+$command = $argv[1];
+$arguments = array_slice($argv, 2);
+
+switch ($command) {
+    case 'migrate':
+        migrateDatabase($arguments);
+        break;
+    case 'create:database':
+        createDatabase();
+        break;
+    default:
+        echo "Commande inconnue\n 
+        Liste des commandes disponibles :\n
+        - migrate [--up | --down] => Permet d'exécuter les migrations disponibles\n
+        - create:database => Permet de créer la database\n
+        ";
+}
+
+function createDatabase(): void
+{
+    $dotEnv = Dotenv::createImmutable(__DIR__ . '/../');
+    $dotEnv->load();
+
+    $dbHost = explode(';', $_ENV['DATABASE_URL'])[0];
+    $dbName = explode('=', explode(';', $_ENV['DATABASE_URL'])[1])[1];
+    $dbUser = $_ENV['DATABASE_USERNAME'];
+    $dbPassword = $_ENV['DATABASE_PASSWORD'];
+
+    // Création d'une connexion PDO pour exécuter la création de la base de données
+    try {
+        $pdo = new PDO($dbHost, $dbUser, $dbPassword);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbName`;");
+
+        echo "La base de données `$dbName` a été créée avec succès.\n";
+    } catch (PDOException $e) {
+        die("Erreur lors de la création de la base de données: " . $e->getMessage() . "\n");
+    }
+}
+
+function migrateDatabase(array $args): void
+{
+    if (count($args) === 0) {
+        echo "Il manque un arguement --up ou --down";
+        return;
+    }
+
+    $direction = $args[0];
+    match ($direction) {
+        '--up' => applyMigration(),
+        '--down' => revertMigration(),
+    };
+
+}
+
+function applyMigration(): void
+{
+    $migrations = array_filter(getMigrationFiles(), fn($fileName) => (str_starts_with(basename($fileName), 'Version')));
+
+    foreach ($migrations as $migrationFile) {
+        $className = "Migrations\\" . pathinfo(basename($migrationFile), PATHINFO_FILENAME);
+        $migration = new $className();
+        $classBaseName = basename($className);
+
+        try {
+            $migration->up();
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            exit(1);
+        }
+
+        echo "La migration $classBaseName c'est appliqué avec succès";
+    }
+}
+
+function revertMigration(): void
+{
+    $migrations = array_filter(getMigrationFiles(), fn($fileName) => (str_starts_with(basename($fileName), 'Version')));
+
+    foreach ($migrations as $migrationFile) {
+        $className = "Migrations\\" . pathinfo(basename($migrationFile), PATHINFO_FILENAME);
+        $migration = new $className();
+        $classBaseName = basename($className);
+
+        try {
+            $migration->down();
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            exit(1);
+        }
+
+        echo "La migration $classBaseName c'est appliqué avec succès";
+    }
+}
+
+function getMigrationFiles(): bool|array
+{
+    $files = glob('migrations/*.php');
+    sort($files);
+    return $files;
+}
+
