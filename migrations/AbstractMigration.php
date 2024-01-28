@@ -11,7 +11,7 @@ abstract class AbstractMigration
     protected PDO $pdo;
     public function __construct()
     {
-        $this->dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+        $this->dotenv = Dotenv::createImmutable(__DIR__.'/../');
         $this->dotenv->load();
         $dbHost = $_ENV['DATABASE_URL'];
         $dbUser = $_ENV['DATABASE_USERNAME'];
