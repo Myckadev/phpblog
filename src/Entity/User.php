@@ -5,18 +5,21 @@ namespace App\Entity;
 class User {
 
     private ?int $id;
+
+    private string $email;
     private string $firstName;
     private string $lastName;
-    private string $description;
-    private string $resume;
-    private string $profilPicture;
+    private ?string $description;
+    private ?string $resume;
+    private ?string $profilPicture;
     private string $password;
-    private array $links;
-    private array $roles;
+    private ?array $links;
+    private ?array $roles;
 
-    public function __construct(?int $id, string $firstName, string $lastName, string $description, string $resume, string $profilPicture, string $password, array $links, array $roles)
+    public function __construct(?int $id, string $email, string $firstName, string $lastName, string $password, ?string $description = null, ?string $resume = null, ?string $profilPicture = null, ?array $links = null, ?array $roles = null)
     {
         $this->id = $id;
+        $this->email = $email;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->description = $description;
@@ -36,6 +39,17 @@ class User {
     {
         $this->id = $id;
     }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
 
     public function getFirstName(): string
     {
@@ -57,32 +71,32 @@ class User {
         $this->lastName = $lastName;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
 
-    public function getResume(): string
+    public function getResume(): ?string
     {
         return $this->resume;
     }
 
-    public function setResume(string $resume): void
+    public function setResume(?string $resume): void
     {
         $this->resume = $resume;
     }
 
-    public function getProfilPicture(): string
+    public function getProfilPicture(): ?string
     {
         return $this->profilPicture;
     }
 
-    public function setProfilPicture(string $profilPicture): void
+    public function setProfilPicture(?string $profilPicture): void
     {
         $this->profilPicture = $profilPicture;
     }
@@ -97,22 +111,22 @@ class User {
         $this->password = $password;
     }
 
-    public function getLinks(): array
+    public function getLinks():? array
     {
         return $this->links;
     }
 
-    public function setLinks(array $links): void
+    public function setLinks(?array $links): void
     {
         $this->links = $links;
     }
 
-    public function getRoles(): array
+    public function getRoles(): ?array
     {
         return $this->roles;
     }
 
-    public function setRoles(array $roles): void
+    public function setRoles(?array $roles): void
     {
         $this->roles = $roles;
     }
