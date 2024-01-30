@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use JetBrains\PhpStorm\NoReturn;
+
 class RedirectResponse
 {
 
@@ -17,6 +19,7 @@ class RedirectResponse
 
     public function redirect(): void
     {
+        header("Cache-Control: no-cache, no-store, must-revalidate");
         header('Location: ' . $this->uri, true, $this->statusCode);
     }
 }

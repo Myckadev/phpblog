@@ -13,6 +13,7 @@ class SessionService
             session_set_cookie_params([
                'lifetime' => 3600,
                 'path' => '/',
+                'domain' => '', // Spécifiez votre domaine si nécessaire
                 'secure' => true,
                 'httponly' => true,
                 'samesite' => 'Strict',
@@ -53,22 +54,27 @@ class SessionService
     // Détruire complètement la session
     public function destroySession(): void
     {
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            // Supprimer toutes les données de session
-            $_SESSION = [];
-
-            // Supprimer le cookie de session
-            if (ini_get("session.use_cookies")) {
-                $params = session_get_cookie_params();
-                setcookie(session_name(), '', time() - 42000,
-                    $params["path"], $params["domain"],
-                    $params["secure"], $params["httponly"]
-                );
-            }
-
-            // Finalement, détruire la session
-            session_destroy();
+        // Supprime le cookie de session
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
         }
+
+        // Supprimer toutes les données de session
+        $_SESSION = [];
+
+        //S'assure de valider toute les modifications apporté à la session
+        session_write_close();
+        // Finalement, détruit la session
+        session_destroy();
     }
 
     public function generateCsrfToken(): string

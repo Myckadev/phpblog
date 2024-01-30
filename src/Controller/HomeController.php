@@ -3,12 +3,11 @@
 namespace App\Controller;
 
 use App\Repository\UserRepository;
-use App\Entity\User;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class TestController extends AbstractController
+class HomeController extends AbstractController
 {
 
     private UserRepository $userRepository;
@@ -31,17 +30,9 @@ class TestController extends AbstractController
      */
     public function home(): Response
     {
-        $hashedPassword = password_hash('1234', PASSWORD_DEFAULT);
-        $user = new User(null, 'bloutime', $hashedPassword);
+        $userId = $this->sessionService->getSession('userId');
+        $user = $this->userRepository->find($userId);
 
-        $userId = $this->userRepository->save($user);
-
-        return $this->render('base.twig', ['var' => 'Hello World', 'userId' => $userId]);
-    }
-
-    public function list()
-    {
-        echo 'JE SUIS LA LIST';
-    
+        return $this->render('pages/home.twig', ['isConnected' => !!$user]);
     }
 }
