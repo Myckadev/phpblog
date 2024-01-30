@@ -1,0 +1,9 @@
+{% extends 'base.twig' %}
+{% block body %}
+    <h1>Bienvenue sur votre premier blog !</h1>
+    {% if isConnected == false %}
+        <h4><a href="login">Connectez-vous</a> pour accéder à vos informations</h4>
+    {% else %}
+        <h3>ToDO : FORM</h3>
+    {% endif %}
+{% endblock %}
