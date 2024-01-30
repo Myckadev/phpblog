@@ -14,6 +14,7 @@ class Version202401202331 extends AbstractMigration implements MigrationInterfac
         $this->pdo->exec("
             CREATE TABLE IF NOT EXISTS user (
                 id INT AUTO_INCREMENT PRIMARY KEY,
+                email VARCHAR(255) NOT NULL,
                 first_name VARCHAR(50) NOT NULL,
                 last_name VARCHAR(50) NOT NULL,
                 description TEXT,
