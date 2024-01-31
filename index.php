@@ -18,7 +18,8 @@ $router->add('login', SecurityController::class, 'login');
 $router->add('logout', SecurityController::class, 'logout');
 $router->add('register', SecurityController::class, 'register',);
 $router->add('auth_register', SecurityController::class, 'doRegister', 'POST');
-//$router->add('list/{id}', TestController::class, 'list');
+$router->add('articles', ArticleController::class, 'getArticles');
+$router->add('articles/{id}', ArticleController::class, 'getArticleDetails');
 
 
 $router->run();
