@@ -1,0 +1,6 @@
+{% extends 'base.twig' %}
+{% block body %}
+    {% for article in articles %}
+        {% include 'components/article_card.twig' %}
+    {% endfor %}
+{% endblock %}
