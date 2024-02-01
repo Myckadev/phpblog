@@ -60,7 +60,7 @@ class SecurityController extends AbstractController
                     $this->sessionService->ensureStarted();
                     $this->sessionService->createSession('userId', $result->getId());
 
-                    return $this->redirect('/phpblog/');
+                    return $this->redirect('/');
                 },
             );
         } catch (\Exception $exception) {
@@ -72,7 +72,7 @@ class SecurityController extends AbstractController
     {
         $this->sessionService->destroySession();
 
-        return $this->redirect('/phpblog/');
+        return $this->redirect('/');
     }
 
 
@@ -94,6 +94,11 @@ class SecurityController extends AbstractController
     public function doRegister(): Response | RedirectResponse
     {
         try {
+
+            if (!$this->sessionService->isAuthenticated()) {
+                throw new \Exception('Not authenticated', 403);
+            }
+
             return $this->handleForm(
                 validateForm: function () {
                     $postData = $this->requestService->getBody('email', 'password', 'firstName', 'lastName');
@@ -108,7 +113,7 @@ class SecurityController extends AbstractController
                     $this->userRepository->save($user);
                     //envoi de mail d'inscription ?
 
-                    return $this->redirect('/phpblog/');
+                    return $this->redirect('/');
                 },
             );
         } catch (\Exception $e) {

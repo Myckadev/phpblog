@@ -16,8 +16,7 @@ class Router
 
     public function run(): void
     {
-        //TODO: retirer le prefix à la con
-        $uri = str_replace('/phpblog/', '', trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), "phpblog"));
+        $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), "/");
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
         foreach ($this->routes as $route) {
