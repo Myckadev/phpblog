@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Repository\ArticleRepository;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -33,7 +34,7 @@ class ArticleController extends AbstractController
         $articles = $this->articleRepository->getArticlesOrderBy('updated_at', 'DESC');
         $userId = $this->sessionService->getSession('userId');
 
-        return $this->render('pages/article.twig', args: ['articles' => $articles, 'isConnected' => !!$userId]);
+        return $this->render('pages/article.twig', args: ['articles' => $articles]);
 
     }
 
@@ -47,5 +48,34 @@ class ArticleController extends AbstractController
         $article = $this->articleRepository->find($id);
 
         return $this->render('pages/article_details.twig', args: ['article' => $article]);
+    }
+
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function postArticle(): Response | RedirectResponse
+    {
+        try {
+            return $this->handleForm(
+                validateForm: function () {
+                    $postData = $this->requestService->getBody('title', 'description', 'content');
+
+                    if (count(array_diff(['title', 'description', 'content'], array_keys($postData)))) {
+                        throw new \Exception('Invalid form', code: 404);
+                    } else {
+                        return new Article(...['id' => null, 'userId' => $this->sessionService->getSession('userId') , ...$postData]);
+                    }
+                },
+                onSuccess: function ($article) {
+                    $this->articleRepository->save($article);
+
+                    return $this->redirect('/');
+                }
+            );
+        } catch (\Exception $e) {
+            return $this->render('error.twig', args: ['message' => $e->getMessage()], statusCode: $e->getCode());
+        }
     }
 }
