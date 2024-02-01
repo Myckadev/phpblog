@@ -11,14 +11,14 @@ class Article
     private int $userId;
     private \DateTime $updatedAt;
 
-    public function __construct(?int $id, string $content, string $title, string $description, int $userId, \DateTime $updatedAt)
+    public function __construct(?int $id, string $content, string $title, string $description, int $userId, string $updatedAt)
     {
         $this->id = $id;
         $this->content = $content;
         $this->title = $title;
         $this->description = $description;
         $this->userId = $userId;
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new \DateTime($updatedAt);
     }
 
     public function getId(): ?int
@@ -76,9 +76,12 @@ class Article
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): void
+    /**
+     * @throws \Exception
+     */
+    public function setUpdatedAt(string $updatedAt): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new \DateTime($updatedAt);
     }
 
 }

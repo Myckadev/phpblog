@@ -1,7 +1,7 @@
 <nav class="navbar sticky-top bg-body-tertiary bg-light d-none d-lg-block shadow p-3 mb-5 bg-body-tertiary rounded" style="top:-1px">
     <div class="container-fluid justify-content-evenly">
         <a class="navbar-brand d-flex gap-2 text-secondary" href="/phpblog/"><i class="bi bi-house-fill"></i>Accueil</a>
-        <a class="navbar-brand d-flex gap-2 text-secondary" href="/phpblog/list"> <i class="bi bi-list-task"></i>Liste</a>
+        <a class="navbar-brand d-flex gap-2 text-secondary" href="/phpblog/articles"> <i class="bi bi-list-task"></i>Liste</a>
         {% if isConnected == false %}
             <a class="navbar-brand d-flex gap-2 text-secondary" href="/phpblog/login"><i class="bi bi-box-arrow-left"></i>Se connecter</a>
         {% else %}
@@ -13,7 +13,7 @@
 <nav class="navbar fixed-bottom bg-light bg-body-tertiary d-lg-none shadow p-2 mt-5 bg-body-tertiary rounded">
     <div class="container-fluid justify-content-around">
         <a class="navbar-brand d-flex gap-2 text-secondary" href="/phpblog/"><i class="bi bi-house-fill"></i></a>
-        <a class="navbar-brand d-flex gap-2 text-secondary" href="/phpblog/list"> <i class="bi bi-list-task"></i></a>
+        <a class="navbar-brand d-flex gap-2 text-secondary" href="/phpblog/articles"> <i class="bi bi-list-task"></i></a>
         {% if isConnected == false %}
             <a class="navbar-brand d-flex gap-2 text-secondary" href="/phpblog/login"><i class="bi bi-box-arrow-left"></i></a>
         {% else %}

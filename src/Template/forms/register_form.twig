@@ -1,13 +1,24 @@
 <div>
     <form method="post" action="auth_register">
-        <label for="firstName">Prénom</label>
-        <input type="text" name="firstName" id="firstName">
-        <label for="lastName">Nom</label>
-        <input type="text" name="lastName" id="lastName">
-        <label for="email">Adresse email</label>
-        <input type="text" name="email" id="email">
-        <label for="password">Mot de passe</label>
-        <input type="password" name="password" id="password">
-        <button type="submit" >Valider </button>
+        <div class="mb-3">
+            <label for="firstName" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="firstName" name="firstName">
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="lastName" name="lastName">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Adresse email</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Valider</button>
+            <p>Déjà un compte ? <a href="/phpblog/login">Se connecter</a></p>
+        </div>
     </form>
 </div>

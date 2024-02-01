@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use JetBrains\PhpStorm\NoReturn;
-
 class RedirectResponse
 {
 
