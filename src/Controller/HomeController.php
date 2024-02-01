@@ -30,9 +30,6 @@ class HomeController extends AbstractController
      */
     public function home(): Response
     {
-        $userId = $this->sessionService->getSession('userId');
-        $user = $this->userRepository->find($userId);
-
-        return $this->render('pages/home.twig', ['isConnected' => !!$user]);
+        return $this->render('pages/home.twig');
     }
 }
