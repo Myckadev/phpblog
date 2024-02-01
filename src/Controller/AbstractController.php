@@ -48,7 +48,11 @@ abstract class AbstractController
         $userId = $this->sessionService->getSession('userId');
         $user = $this->userRepository->find($userId);
 
-        return new Response($this->twig->render($template, ['user' => $user, ...$args]), statusCode: (int)$statusCode);
+        if ($user) {
+            $this->sessionService->generateCsrfToken();
+        }
+
+        return new Response($this->twig->render($template, ['user' => $user, 'csrf_token' => $this->sessionService->getCsrfToken(), ...$args]), statusCode: (int)$statusCode);
     }
 
     protected function redirect(string $uri): RedirectResponse

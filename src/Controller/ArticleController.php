@@ -72,7 +72,8 @@ class ArticleController extends AbstractController
                     $this->articleRepository->save($article);
 
                     return $this->redirect('/');
-                }
+                },
+                csrfToken: $this->requestService->getBody('csrf_token')['csrf_token'],
             );
         } catch (\Exception $e) {
             return $this->render('error.twig', args: ['message' => $e->getMessage()], statusCode: $e->getCode());
