@@ -5,7 +5,6 @@ require_once 'vendor/autoload.php';
 use App\Controller\ArticleController;
 use App\Controller\HomeController;
 use App\Controller\SecurityController;
-use App\Controller\TestController;
 use App\Router;
 
 // Configuration des routes
@@ -20,6 +19,6 @@ $router->add('register', SecurityController::class, 'register',);
 $router->add('auth_register', SecurityController::class, 'doRegister', 'POST');
 $router->add('articles', ArticleController::class, 'getArticles');
 $router->add('articles/{id}', ArticleController::class, 'getArticleDetails');
-
+$router->add('articles/create', ArticleController::class, 'postArticle', 'POST');
 
 $router->run();

@@ -97,4 +97,10 @@ class SessionService
     {
         return $token === $this->getCsrfToken();
     }
+
+    public function isAuthenticated(): bool
+    {
+        return !!$this->getSession('userId');
+    }
+
 }

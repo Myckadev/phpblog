@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
 use App\Service\RequestService;
 use App\Service\SessionService;
 use Twig\Environment;
@@ -15,12 +16,14 @@ abstract class AbstractController
     protected Environment $twig;
     protected SessionService $sessionService;
     protected RequestService $requestService;
+    private UserRepository $userRepository;
 
     public function __construct()
     {
         $this->twig = $this->initializeTwig();
         $this->sessionService = new SessionService();
         $this->requestService = new RequestService();
+        $this->userRepository = new UserRepository();
     }
 
     abstract protected function initializeRepository();
@@ -42,7 +45,14 @@ abstract class AbstractController
      */
     protected function render($template, array $args = [], $statusCode = 200): Response
     {
-        return new Response($this->twig->render($template, $args), statusCode: (int)$statusCode);
+        $userId = $this->sessionService->getSession('userId');
+        $user = $this->userRepository->find($userId);
+
+        if ($user) {
+            $this->sessionService->generateCsrfToken();
+        }
+
+        return new Response($this->twig->render($template, ['user' => $user, 'csrf_token' => $this->sessionService->getCsrfToken(), ...$args]), statusCode: (int)$statusCode);
     }
 
     protected function redirect(string $uri): RedirectResponse

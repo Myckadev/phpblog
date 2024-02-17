@@ -1,6 +1,21 @@
 {% extends 'base.twig' %}
 {% block body %}
-    {% for article in articles %}
-        {% include 'components/article_card.twig' %}
-    {% endfor %}
+    <div class="d-flex flex-column gap-3">
+        {% if user %}
+            <p>
+                <a class="btn btn-primary" data-bs-toggle="collapse" href="#createArticle" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Créer un article
+                </a>
+            </p>
+            <div class="collapse" id="createArticle">
+                <div class="card card-body">
+                    {% include 'forms/article_form.twig' %}
+
+                </div>
+            </div>
+        {% endif %}
+        {% for article in articles %}
+            {% include 'components/article_card.twig' %}
+        {% endfor %}
+    </div>
 {% endblock %}

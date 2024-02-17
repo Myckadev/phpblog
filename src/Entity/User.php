@@ -131,5 +131,9 @@ class User {
         $this->roles = $roles;
     }
 
+    public function isAdmind(): bool
+    {
+        return in_array('ROLE_ADMIN', $this->getRoles());
+    }
 
 }
